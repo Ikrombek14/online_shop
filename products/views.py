@@ -8,8 +8,15 @@ class ProductsCategoryView(View):
         context = {
             'products_category': products_category
         }
-        return render(request, 'Products/products_category.html', context=context)
+        return render(request, 'products_category.html', context=context)
 
+class ProductsAllView(View):
+    def get(self,request):
+        products = Products.objects.all()
+        context = {
+            'products' : products
+        }
+        return render(request, 'home.html', context=context)
 
 class ProductsView(View):
     def get(self, request, pk):
@@ -17,7 +24,7 @@ class ProductsView(View):
         context = {
             'items' : items
         }
-        return render(request, 'Products/products.html', context=context)
+        return render(request, 'products.html', context=context)
 
 
 class ProductsDetailView(View):
@@ -31,5 +38,5 @@ class ProductsDetailView(View):
             'result' : result,
             'average' : average
         }
-        return render(request, 'Products/products_detail.html', context=context)
+        return render(request, 'products_detail.html', context=context)
 
