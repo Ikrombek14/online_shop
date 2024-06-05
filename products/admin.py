@@ -1,7 +1,7 @@
-from django.contrib import admin
-from .models import ProductsMake, ProductsCategory, Products
-# Register your models here.
-
-admin.site.register(Products)
-admin.site.register(ProductsCategory)
-admin.site.register(ProductsMake)
+# from django.contrib import admin
+# from .models import ProductsCategory, Products, Order, Favorite
+# # Register your models here.
+# admin.site.register(ProductsCategory)
+# admin.site.register(Products)
+# admin.site.register(Order)
+# admin.site.register(Favorite)
