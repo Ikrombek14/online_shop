@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import CustomUser
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -56,7 +56,13 @@ class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Products, on_delete=models.DO_NOTHING)
     comment = models.TextField()
-    star_given=models.IntegerField()
+    star_given = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(0),
+            MaxValueValidator(5)
+        ]
+    )
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
