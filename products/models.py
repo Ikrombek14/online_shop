@@ -52,4 +52,15 @@ class Favorite(models.Model):
     def __str__(self):
         return f"User: {self.user.username} | Product: {self.product.name}"
 
+class Comment(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+    product = models.ForeignKey(Products, on_delete=models.DO_NOTHING)
+    comment = models.TextField()
+    star_given=models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = 'comment'
+
+    def __str__(self):
+        return f"User: {self.user.username} | Product: {self.product.name} | Comment: {self.comment} | Star Given: {self.star_given} | Date: {self.date}"
