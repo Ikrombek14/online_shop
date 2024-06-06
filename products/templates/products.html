@@ -4,8 +4,8 @@
 
     <h1>Products</h1>
     <div>
-            {% for product in items %}
-                <a href="{% url 'products:products_detail' pk=product.pk %}">{{ product.name }}</a>
-            {% endfor %}
+        {% for product in item %}
+            <a href="{% url 'products:products_detail' product.pk %}">{{ product.name }}</a>
+        {% endfor %}
     </div>
 {% endblock %}

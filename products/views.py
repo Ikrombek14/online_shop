@@ -11,13 +11,13 @@ class ProductsCategoryView(View):
         }
         return render(request, 'products_category.html', context=context)
 
-class ProductsAllView(View):
-    def get(self,request):
-        products = Products.objects.all()
-        context = {
-            'products' : products
-        }
-        return render(request, 'home.html', context=context)
+# class ProductsAllView(View):
+#     def get(self,request):
+#         products = Products.objects.all()
+#         context = {
+#             'products' : products
+#         }
+#         return render(request, 'home.html', context=context)
 
 class ProductsView(View):
     def get(self, request, pk):
@@ -31,20 +31,14 @@ class ProductsView(View):
 class ProductsDetailView(View):
     def get(self, request, pk):
         products = Products.objects.get(pk=pk)
+        comment=Comment.objects.all()
         comments = Comment.objects.filter(product_id=pk)
         result = [comment.star_given for comment in comments if 1 < comment.star_given < 6]
         average = round(sum(result) / len(result), 1) if result else None
         context = {
             'products' : products,
             'result' : result,
-            'average' : average
-        }
-        return render(request, 'products_detail.html', context=context)
-
-class CommentsView(View):
-    def get(self, request):
-        comment=Comment.objects.all()
-        context = {
+            'average' : average,
             'comment' : comment
         }
         return render(request, 'products_detail.html', context=context)

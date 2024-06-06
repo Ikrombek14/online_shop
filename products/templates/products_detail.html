@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
-{% block title %}Update comment{%endblock%}
+{% block title %}{%endblock%}
 {% block content %}
-    
+    <div class="reviews">
+        <h2>Reviews</h2>
+        
+        <a href="{% url 'products:add_comment' products.pk %}" >
+            <button class="review-button" >Add comment</button>
+        </a>
+        <hr style="margin:10px;">
+        {%for comment in comments%}
+        <div class="review-item">
+            <div class="review-user">Username: {{ comment.user.username }}</div>
+            <div class="review-rating">Rating: {{ comment.star_given }}</div>
+            <p class="review-comment">Cmomment:{{ comment.comment }}</p>
+            
+            {% if user.is_authenticated and review.user == user %}
+                <button>
+                    <a href="{% url 'products:delete_comment' comment.pk %}">Delete</a>
+                </button>
+                <button class="update-btn">
+                    <a href="{% url 'products:update_comment' comment.pk %}">Update</a>
+                </button>
+            {% endif %}
+        </div>
+        {%endfor%}
+    </div>
+
 {% endblock %}

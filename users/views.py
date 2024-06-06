@@ -1,12 +1,9 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.shortcuts import render, redirect
 from .forms import CustomUserForm, ProfileUpdateForm
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
-
+from django.contrib import messages
 from products.models import Products
 # Create your views here.
 
@@ -44,7 +41,7 @@ class LoginView(View):
         if login_form.is_valid():
             user = login_form.get_user()
             login(request, user)
-            return redirect('home:home-page')
+            return redirect('home:home')
         else:
 
             context = {
@@ -56,7 +53,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('home:home-page')
+        return redirect('home:home')
 
 
 class ProfileView(View):
@@ -86,4 +83,5 @@ class ProfileUpdateView(View):
             context = {
                 'form': update_form
             }
+            messages.error(request,'Something went wrong')
             return render(request, 'profile_update.html', context=context)
