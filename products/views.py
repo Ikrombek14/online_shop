@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import ProductsCategory, Products, Order, Favorite, Comment
+from .forms import CommentForm
 from django.views import View
 # Create your views here.
 class ProductsCategoryView(View):
@@ -40,3 +41,34 @@ class ProductsDetailView(View):
         }
         return render(request, 'products_detail.html', context=context)
 
+class CommentsView(View):
+    def get(self, request):
+        comment=Comment.objects.all()
+        context = {
+            'comment' : comment
+        }
+        return render(request, 'products_detail.html', context=context)
+
+class AddCommentView(View):
+    def post(self, request, pk):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.product = Products.objects.get(pk=pk)
+            comment.save()
+        return render(request, 'products_detail.html', context={'form': form})
+    
+class UpdateCommentView(View):
+    def post(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+        return render(request, 'products_detail.html', context={'form': form})
+
+class DeleteCommentView(View):
+    def get(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        comment.delete()
+        return render(request, 'products_detail.html', context={'form': CommentForm()})
