@@ -43,7 +43,7 @@ class ProductsView(View):
 class ProductsDetailView(View):
     def get(self, request, pk):
         products = Products.objects.get(pk=pk)
-        comment=Comment.objects.all()
+        comment = Comment.objects.all()
         comments = Comment.objects.filter(product_id=pk)
         result = [comment.star_given for comment in comments if 1 < comment.star_given < 6]
         average = round(sum(result) / len(result), 1) if result else None
