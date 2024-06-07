@@ -48,10 +48,10 @@ class ProductsDetailView(View):
         result = [comment.star_given for comment in comments if 1 < comment.star_given < 6]
         average = round(sum(result) / len(result), 1) if result else None
         context = {
-            'products' : products,
-            'result' : result,
-            'average' : average,
-            'comment' : comment
+            'products': products,
+            'result': result,
+            'average': average,
+            'comment': comment
         }
         return render(request, 'products_detail.html', context=context)
 
@@ -78,3 +78,6 @@ class DeleteCommentView(View):
         comment = Comment.objects.get(pk=pk)
         comment.delete()
         return render(request, 'products_detail.html', context={'form': CommentForm()})
+
+
+class AddToCartView(View):
