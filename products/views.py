@@ -15,7 +15,7 @@ class HomeTest(LoginRequiredMixin, View):
             return render(request, 'users:login')
         
 class ProductsCategoryView(View):
-    def get(self,request):
+    def get(self, request):
         products_category = ProductsCategory.objects.all()
         context = {
             'products_category': products_category
