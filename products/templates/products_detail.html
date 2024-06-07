@@ -10,7 +10,7 @@
         margin-right: 20px;
     }
     .product-info {
-        max-width: 600px;
+        max-width: 600px; /* adjust as necessary */
     }
     .reviews {
         margin-top: 30px;
@@ -36,8 +36,9 @@
         width: 200px;
     }
     .category-product-item img {
-        max-width: 100%;
-        height: auto;
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
     }
 </style>
 
@@ -78,7 +79,7 @@
 </div>
 
 <div class="category-products-container">
-    <h4>Other Products in this Category</h4>
+    <h2>Other Products in this Category</h2>
     <div class="category-products">
         {% for product in category_products %}
         <div class="category-product-item">
