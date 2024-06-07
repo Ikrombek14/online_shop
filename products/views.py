@@ -5,6 +5,8 @@ from django.views import View
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
+from django.db.models import Q
+
 # Create your views here.
 
 
@@ -83,3 +85,14 @@ class DeleteCommentView(View):
         return render(request, 'products_detail.html', context={'form': CommentForm()})
 
 
+class SearchView(View):
+    def get(self, request):
+        query = request.GET.get('q')
+        items = Products.objects.filter(
+            Q(Q(name__icontains=query) | Q(price__icontains=query) | Q(description__icontains=query))
+        )
+        context = {
+            'items': items,
+            'query': query
+        }
+        return render(request, 'search.html', context=context)
