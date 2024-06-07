@@ -12,7 +12,7 @@
         <div class="review-item">
             <div class="review-user">Username: {{ comment.user.username }}</div>
             <div class="review-rating">Rating: {{ comment.star_given }}</div>
-            <p class="review-comment">Cmomment:{{ comment.comment }}</p>
+            <p class="review-comment">Comment:{{ comment.comment }}</p>
             
             {% if user.is_authenticated and review.user == user %}
                 <button>
