@@ -2,7 +2,17 @@ from django.shortcuts import render
 from .models import ProductsCategory, Products, Order, Favorite, Comment
 from .forms import CommentForm
 from django.views import View
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+
+class HomeTest(LoginRequiredMixin,View):
+    def get(self,request):
+        if request.user.is_authenticated():    
+            return render(request, 'home.html')
+        else:
+            return render(request, 'users:login')
+        
 class ProductsCategoryView(View):
     def get(self,request):
         products_category = ProductsCategory.objects.all()
@@ -21,7 +31,7 @@ class ProductsCategoryView(View):
 
 class ProductsView(View):
     def get(self, request, pk):
-        items = Products.objects.get(category=pk)
+        items = Products.objects.filter(category=pk)
         context = {
             'items' : items
         }

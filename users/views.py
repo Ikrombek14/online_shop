@@ -41,7 +41,7 @@ class LoginView(View):
         if login_form.is_valid():
             user = login_form.get_user()
             login(request, user)
-            return redirect('home:home')
+            return redirect('home')
         else:
 
             context = {
@@ -53,7 +53,7 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('home:home')
+        return redirect('home')
 
 
 class ProfileView(View):
