@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import ProductsCategory, Products, Order, Favorite, Comment
 from .forms import CommentForm
 from django.views import View
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils.decorators import method_decorator
 # Create your views here.
 
 
@@ -42,16 +43,18 @@ class ProductsView(View):
 
 class ProductsDetailView(View):
     def get(self, request, pk):
-        products = Products.objects.get(pk=pk)
-        comment = Comment.objects.all()
+        products = get_object_or_404(Products, pk=pk)
+        comment_detail = Comment.objects.filter(product_id=pk)
         comments = Comment.objects.filter(product_id=pk)
         result = [comment.star_given for comment in comments if 1 < comment.star_given < 6]
         average = round(sum(result) / len(result), 1) if result else None
+        category_products = Products.objects.filter(category=products.category).exclude(pk=products.id)
         context = {
             'products': products,
             'result': result,
             'average': average,
-            'comment': comment
+            'comment_detail': comment_detail,
+            'category_products': category_products
         }
         return render(request, 'products_detail.html', context=context)
 
@@ -80,4 +83,3 @@ class DeleteCommentView(View):
         return render(request, 'products_detail.html', context={'form': CommentForm()})
 
 
-class AddToCartView(View):

@@ -10,7 +10,7 @@
         margin-right: 20px;
     }
     .product-info {
-        max-width: 600px; /* adjust as necessary */
+        max-width: 600px;
     }
     .reviews {
         margin-top: 30px;
@@ -20,6 +20,24 @@
     }
     .review-button {
         margin-bottom: 10px;
+    }
+    .category-products-container {
+        margin-top: 30px;
+    }
+    .category-products {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px;
+        padding: 10px 0;
+    }
+    .category-product-item {
+        flex: 0 0 auto;
+        text-align: center;
+        width: 200px;
+    }
+    .category-product-item img {
+        max-width: 100%;
+        height: auto;
     }
 </style>
 
@@ -31,6 +49,7 @@
         <p><strong>Name:</strong> {{ products.name }}</p>
         <p><strong>Description:</strong> {{ products.description }}</p>
         <p><strong>Price:</strong> {{ products.price }}</p>
+        <p><strong>Rating:</strong> {{ average }}</p>
     </div>
 </div>
 
@@ -40,7 +59,7 @@
         <button class="review-button">Add comment</button>
     </a>
     <hr style="margin:10px;">
-    {% for comment in comments %}
+    {% for comment in comment_detail %}
     <div class="review-item">
         <div class="review-user">Username: {{ comment.user.username }}</div>
         <div class="review-rating">Rating: {{ comment.star_given }}</div>
@@ -56,6 +75,21 @@
         {% endif %}
     </div>
     {% endfor %}
+</div>
+
+<div class="category-products-container">
+    <h4>Other Products in this Category</h4>
+    <div class="category-products">
+        {% for product in category_products %}
+        <div class="category-product-item">
+            <a href="{% url 'products:products_detail' product.id %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}
