@@ -34,7 +34,7 @@
         <p class="review-comment">Comment: {{ comment.comment }}</p>
 
         {% if user.is_authenticated and comment.user == user %}
-        <button>
+        <button class="delete-btn">
             <a href="{% url 'products:delete_comment' comment.pk %}">Delete</a>
         </button>
         <button class="update-btn">
@@ -46,19 +46,21 @@
     {% endfor %}
 </div>
 
-<div class="category-products-container">
+<div >
     <h2>Other Products in this Category</h2>
-    <div class="category-products">
+    <div class="cards">
         {% for product in category_products %}
-        <div class="category-product-item">
-            <a href="{% url 'products:products_detail' product.id %}">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                <p>{{ product.name }}</p>
-                <p>{{ product.price }}</p>
-            </a>
-        </div>
+            <div class="card">
+                <a href="{% url 'products:products_detail' product.id %}">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <hr>
+                    <div class="product-info">
+                        <p class="product-name">{{ product.name }}</p>
+                        <p class="product-price">${{ product.price }}</p>
+                    </div>
+                </a>
+            </div>
         {% endfor %}
     </div>
-</div>
 
 {% endblock %}
