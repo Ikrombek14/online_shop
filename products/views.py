@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from .models import ProductsCategory, Products, Order, Favorite, Comment
 from .forms import CommentForm
 from django.views import View
@@ -10,12 +10,6 @@ from django.db.models import Q
 # Create your views here.
 
 
-class HomeTest(LoginRequiredMixin, View):
-    def get(self, request):
-        if request.user.is_authenticated:
-            return render(request, 'home.html')
-        else:
-            return render(request, 'users:login')
         
 class ProductsCategoryView(View):
     def get(self, request):
@@ -25,13 +19,15 @@ class ProductsCategoryView(View):
         }
         return render(request, 'products_category.html', context=context)
 
-# class ProductsAllView(View):
-#     def get(self,request):
-#         products = Products.objects.all()
-#         context = {
-#             'products' : products
-#         }
-#         return render(request, 'home.html', context=context)
+class ProductsAllView(View):
+    def get(self,request):
+        products = Products.objects.all()
+        categories = ProductsCategory.objects.all()
+        context = {
+            'products' : products,
+            'categories' : categories
+        }
+        return render(request, 'home.html', context=context)
 
 
 class ProductsView(View):
@@ -46,7 +42,33 @@ class ProductsView(View):
 class ProductsDetailView(View):
     def get(self, request, pk):
         products = get_object_or_404(Products, pk=pk)
-        comment_detail = Comment.objects.filter(product_id=pk)
+        comments = Comment.objects.filter(product_id=pk)
+        form = CommentForm()
+        result = [comment.star_given for comment in comments if 1 < comment.star_given < 6]
+        average = round(sum(result) / len(result), 1) if result else None
+        category_products = Products.objects.filter(category=products.category).exclude(pk=products.id)
+        context = {
+            'products': products,
+            'result': result,
+            'average': average,
+            'comment_detail': comments,
+            'category_products': category_products,
+            'form': form
+        }
+        return render(request, 'products_detail.html', context=context)
+
+class AddCommentView(View):
+    def post(self, request, pk):
+        products = get_object_or_404(Products, pk=pk)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.product = products
+            comment.save()
+            return redirect('products:products_detail', pk=pk)  # Redirect to product detail view after saving
+
+        # If form is not valid, re-render the detail page with form errors
         comments = Comment.objects.filter(product_id=pk)
         result = [comment.star_given for comment in comments if 1 < comment.star_given < 6]
         average = round(sum(result) / len(result), 1) if result else None
@@ -55,21 +77,12 @@ class ProductsDetailView(View):
             'products': products,
             'result': result,
             'average': average,
-            'comment_detail': comment_detail,
-            'category_products': category_products
+            'comment_detail': comments,
+            'category_products': category_products,
+            'form': form
         }
         return render(request, 'products_detail.html', context=context)
 
-class AddCommentView(View):
-    def post(self, request, pk):
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.product = Products.objects.get(pk=pk)
-            comment.save()
-        return render(request, 'products_detail.html', context={'form': form})
-    
 class UpdateCommentView(View):
     def post(self, request, pk):
         comment = Comment.objects.get(pk=pk)

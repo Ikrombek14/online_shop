@@ -53,12 +53,20 @@
         <p><strong>Rating:</strong> {{ average }}</p>
     </div>
 </div>
-
+<div>Average
+    {% if average == 0 %}
+        <p>No reviews yet</p>
+    {% else %}
+        <p>{{ average }}</p>
+    {% endif %}
+</div>
 <div class="reviews">
     <h2>Reviews</h2>
-    <a href="{% url 'products:add_comment' products.pk %}">
-        <button class="review-button">Add comment</button>
-    </a>
+    <form method="post" action="{% url 'products:add_comment' products.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Comment</button>
+    </form>
     <hr style="margin:10px;">
     {% for comment in comment_detail %}
     <div class="review-item">

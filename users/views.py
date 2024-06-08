@@ -41,7 +41,7 @@ class LoginView(View):
         if login_form.is_valid():
             user = login_form.get_user()
             login(request, user)
-            return redirect('home')
+            return redirect('products:products')
         else:
 
             context = {

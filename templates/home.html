@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <h1></h1>
+
+<h1>Categories</h1>
+<div>
+        {% for category in categories %}
+            <a href="{% url 'products:products' category.pk %}">{{ category.name }}</a>
+        {% endfor %}
+</div>
+
+
+
+<h1>Mahsulotlar</h1>
+
+{% for product in products %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+<a href="{% url 'products:products_detail' product.id %}">{{product.name}}</a>
+{% endfor %}
 {% endblock%}
