@@ -10,7 +10,7 @@
         margin-right: 20px;
     }
     .product-info {
-        max-width: 600px; /* adjust as necessary */
+        max-width: 600px;
     }
     .reviews {
         margin-top: 30px;
@@ -44,7 +44,7 @@
 
 <div class="product-container">
     <div class="product-image">
-        <img src="{{ products.image.url }}" alt="{{ products.name }}">
+        <img src="{{ products.image.url }}" height="200px" alt="{{ products.name }}">
     </div>
     <div class="product-info">
         <p><strong>Name:</strong> {{ products.name }}</p>
