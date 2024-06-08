@@ -53,15 +53,14 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('home')
+        return redirect('products:products')
 
 
 class ProfileView(View):
     def get(self, request):
-        products = Products.objects.filter(user=request.user).order_by('-id')
         context = {
             'user': request.user,
-            'products': products
+        
         }
         return render(request, 'profile.html', context=context)
 
