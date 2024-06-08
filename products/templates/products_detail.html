@@ -1,47 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Product Details{% endblock %}
 {% block content %}
-<style>
-    .product-container {
-        display: flex;
-        align-items: flex-start;
-    }
-    .product-image {
-        margin-right: 20px;
-    }
-    .product-info {
-        max-width: 600px;
-    }
-    .reviews {
-        margin-top: 30px;
-    }
-    .review-item {
-        margin-bottom: 20px;
-    }
-    .review-button {
-        margin-bottom: 10px;
-    }
-    .category-products-container {
-        margin-top: 30px;
-    }
-    .category-products {
-        display: flex;
-        overflow-x: auto;
-        gap: 20px;
-        padding: 10px 0;
-    }
-    .category-product-item {
-        flex: 0 0 auto;
-        text-align: center;
-        width: 200px;
-    }
-    .category-product-item img {
-        width: 200px;
-        height: 150px;
-        object-fit: cover;
-    }
-</style>
-
 <div class="product-container">
     <div class="product-image">
         <img src="{{ products.image.url }}" height="200px" alt="{{ products.name }}">

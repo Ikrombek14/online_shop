@@ -1,20 +1,21 @@
 
 {% extends 'base.html' %}
-{% load static %}
-<title>Profile</title>
+{% block title %}
+  Profile
+{%endblock%}
 
 <link rel="stylesheet" href="#">
 
 {% block content %}
-<body>
-  <h1>Profile</h1>
-  <img src="{{ user.image.url }}" alt="">
-  <h3>Username: {{ user.username }}</h3>
-  <h3>First name: {{ user.first_name }}</h3>
-  <h3>Last name: {{ user.last_name }}</h3>
-  <h3>Email: {{ user.email }}</h3>
-  <a href="{% url 'users:update-profile' %}"><button>Edit profile</button></a><br><br>
-  <h4>----------------------------------------------------------------------------------------------------------------------------------------------------</h4>
-
+<div class="profile-container">
+  <img src="{{ user.image.url }}" alt="User Image" class="profile-image">
+  <h3 class="profile-username">Username: {{ user.username }}</h3>
+  <h3 class="profile-info">First name: {{ user.first_name }}</h3>
+  <h3 class="profile-info">Last name: {{ user.last_name }}</h3>
+  <h3 class="profile-info">Email: {{ user.email }}</h3>
+  <a href="{% url 'users:update-profile' %}">
+    <button class="edit-button">Edit profile</button>
+  </a>
+</div>
 
 {% endblock content %}
