@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
 from .models import ProductsCategory, Products, Order, Favorite, Comment
 from .forms import CommentForm
 from django.views import View
@@ -84,19 +85,28 @@ class AddCommentView(View):
         return render(request, 'products_detail.html', context=context)
 
 class UpdateCommentView(View):
+    def get(self, request, pk):
+        comment = get_object_or_404(Comment, pk=pk)
+        update_comment_form = CommentForm(instance=comment)
+        return render(request, 'update_comment.html', context={'update_comment_form': update_comment_form, 'comment': comment})
+
     def post(self, request, pk):
-        comment = Comment.objects.get(pk=pk)
-        form = CommentForm(request.POST, instance=comment)
-        if form.is_valid():
-            form.save()
-        return render(request, 'products_detail.html', context={'form': form})
+        comment = get_object_or_404(Comment, pk=pk)
+        update_comment_form = CommentForm(request.POST, instance=comment)
+        if update_comment_form.is_valid():
+            update_comment_form.save()
+            return redirect('products:products_detail', pk=comment.product.pk)  # Redirect to the product detail page
+        return render(request, 'update_comment.html', context={'update_comment_form': update_comment_form, 'comment': comment})
 
 class DeleteCommentView(View):
     def get(self, request, pk):
-        comment = Comment.objects.get(pk=pk)
+        
+        comment = get_object_or_404(Comment, pk=pk)
+        product = comment.product  # Assuming comment has a foreign key to product
         comment.delete()
-        return render(request, 'products_detail.html', context={'form': CommentForm()})
-
+        
+    
+        return redirect(reverse('products:products_detail', kwargs={'pk': product.pk}))
 
 class SearchView(View):
     def get(self, request):
