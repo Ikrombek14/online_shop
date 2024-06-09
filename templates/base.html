@@ -485,6 +485,54 @@
         a {
             text-decoration: none;
         }
+
+        /* carusel */
+        .carousel-container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .carousel-item h5 {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .controls button {
+            background: none;
+            color: black;
+            font-size: 50px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -639,6 +687,49 @@
         function getResponse(message) {
             return responses[message] || responses['default'];
         }
+
+        // carusel
+
+        let currentIndex = 0;
+        let interval;
+
+        function showSlide(index) {
+            const carousel = document.getElementById('carousel');
+            const totalItems = document.querySelectorAll('.carousel-item').length;
+            if (index >= totalItems) {
+                currentIndex = 0;
+            } else if (index < 0) {
+                currentIndex = totalItems - 1;
+            } else {
+                currentIndex = index;
+            }
+            const offset = -currentIndex * 100;
+            carousel.style.transform = 'translateX(' + offset + '%)';
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+
+        function startAutoSlide() {
+            interval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        }
+
+        function stopAutoSlide() {
+            clearInterval(interval);
+        }
+
+        // Start auto slide when the page loads
+        window.onload = startAutoSlide;
+
+        // Stop auto slide when mouse enters the carousel, resume when it leaves
+        const carouselContainer = document.querySelector('.carousel-container');
+        carouselContainer.addEventListener('mouseenter', stopAutoSlide);
+        carouselContainer.addEventListener('mouseleave', startAutoSlide);
     </script>    
 </body>
 </html>
