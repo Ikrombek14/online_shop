@@ -12,13 +12,13 @@
         <p><strong>Rating:</strong> {{ average }}</p>
     </div>
 </div>
-<div>Average
-    {% if average == 0 %}
-        <p>No reviews yet</p>
-    {% else %}
-        <p>{{ average }}</p>
-    {% endif %}
-</div>
+<!--<div>Average-->
+<!--    {% if average == 0 %}-->
+<!--        <p>No reviews yet</p>-->
+<!--    {% else %}-->
+<!--        <p>{{ average }}</p>-->
+<!--    {% endif %}-->
+<!--</div>-->
 <div class="reviews">
     <h2>Reviews</h2>
     <form method="post" action="{% url 'products:add_comment' products.pk %}">
