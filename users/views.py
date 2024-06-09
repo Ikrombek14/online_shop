@@ -4,6 +4,7 @@ from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib import messages
+from products.models import Logo
 from products.models import Products
 # Create your views here.
 
@@ -58,9 +59,10 @@ class LogoutView(View):
 
 class ProfileView(View):
     def get(self, request):
+        logo = Logo.objects.first()
         context = {
             'user': request.user,
-        
+            'logo': logo
         }
         return render(request, 'profile.html', context=context)
 

@@ -1,6 +1,88 @@
 {% extends 'base.html' %}
 {% block title %}Product Details{% endblock %}
 {% block content %}
+
+<style>
+/* Chiroyli qilib berilgan CSS */
+/* Product Details sahifasidagi stillar */
+.product-container {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    margin-right: 20px;
+}
+
+.product-info {
+    flex: 1;
+}
+
+.product-info p {
+    margin-bottom: 10px;
+}
+
+.reviews {
+    margin-top: 20px;
+}
+
+.review-item {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.review-user {
+    font-weight: bold;
+}
+
+.review-rating {
+    margin-bottom: 5px;
+}
+
+.review-comment {
+    margin-bottom: 10px;
+}
+
+.delete-btn,
+.update-btn {
+    margin-top: 5px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card {
+    flex: 1 0 300px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.product-info {
+    text-align: center;
+}
+
+.product-name {
+    font-weight: bold;
+}
+
+.product-price {
+    color: green;
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+
+</style>
 <div class="product-container">
     <div class="product-image">
         <img src="{{ products.image.url }}" height="200px" alt="{{ products.name }}">

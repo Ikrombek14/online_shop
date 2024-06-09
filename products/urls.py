@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (ProductsCategoryView, ProductsView,
                     ProductsDetailView, AddCommentView, DeleteCommentView,
-                    UpdateCommentView, SearchView, ProductsAllView)
+                    UpdateCommentView, SearchView, ProductsAllView, LogoView)
 
 app_name = 'products'
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path('products/<int:pk>/add-comment/', AddCommentView.as_view(), name='add_comment'),
     path('update-comment/<int:pk>/', UpdateCommentView.as_view(), name='update_comment'),
     path('delete-comment/<int:pk>/', DeleteCommentView.as_view(), name='delete_comment'),
-    path('search/', SearchView.as_view(), name='search')
+    path('search/', SearchView.as_view(), name='search'),
+    path('', LogoView.as_view(), name='logo')
     ]

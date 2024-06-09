@@ -330,13 +330,13 @@
             gap: 20px;
             padding: 10px 0;
         }
-        
+
         .category-product-item {
             flex: 0 0 auto;
             text-align: center;
             width: 200px;
         }
-        
+
         .category-product-item img {
             width: 200px;
             height: 150px;
@@ -540,7 +540,7 @@
         <div class="message-m">
             <ul class="messages">
                 {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>
                     {% if message.level == 40 %}Important: {% endif %}
                     {{ message }}
                 </li>
@@ -550,13 +550,16 @@
     {% endif %}
     <header class="container header">
         <div class="logo">
-            <h1><a href="{% url 'products:products' %}">Home</a></h1>
+
+            <a href="{% url 'products:products' %}">
+                <img src="{{ logo.image.url }}" width="200px" height="75px">
+            </a>
         </div>
-        <div class="search">
-            <form action="{% url 'products:search' %}" method="get" style="display: inline;">
-                <input type="text" name="q" placeholder="Search in products" required>
-            </form>
-        </div>
+<div class="search">
+    <form action="{% url 'products:search' %}" method="get" style="display: inline;">
+        <input type="text" name="q" placeholder="Search in products" required>
+    </form>
+</div>
         {% if user.is_authenticated %}
         <div class="header-buttons">
             <a href="{% url 'users:profile' %}">
@@ -611,12 +614,12 @@
             {% endif %}
         </div>
     </header>
-    
+
 
     <main>
-        
+
         <div class="container">
-            
+
             <hr>
             {% block content %}
 
@@ -652,17 +655,17 @@
             "Sizlarga qanday bog'lansam bo'ladi?": "Tel: +998950955538",
             "default": "Kechirasiz, Men bu savolga javob bera olmayman 😥."
         };
-    
+
         function toggleChat() {
             document.getElementById('chat-box').classList.toggle('hidden');
         }
-    
+
         function handleKeyPress(event) {
             if (event.key === 'Enter') {
                 sendMessage();
             }
         }
-    
+
         function sendMessage() {
             const input = document.getElementById('user-input');
             const message = input.value.trim();
@@ -674,7 +677,7 @@
                 }, 500);
             }
         }
-    
+
         function addMessage(sender, text) {
             const chatBody = document.getElementById('chat-body');
             const messageElement = document.createElement('div');
@@ -683,7 +686,7 @@
             chatBody.appendChild(messageElement);
             chatBody.scrollTop = chatBody.scrollHeight;
         }
-    
+
         function getResponse(message) {
             return responses[message] || responses['default'];
         }
@@ -730,6 +733,6 @@
         const carouselContainer = document.querySelector('.carousel-container');
         carouselContainer.addEventListener('mouseenter', stopAutoSlide);
         carouselContainer.addEventListener('mouseleave', startAutoSlide);
-    </script>    
+    </script>
 </body>
 </html>
