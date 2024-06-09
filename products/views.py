@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from .models import ProductsCategory, Products, Order, Favorite, Comment, Logo
 from .forms import CommentForm
-from django.views import View
+from django.contrib import messages
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
@@ -138,7 +138,75 @@ class SearchView(View):
 
 class LogoView(View):
     def get(self, request):
-        logo = Logo.objects.first()  # Get the first logo object from the database
+        logo = Logo.objects.first()
 
         context = {'logo': logo}
         return render(request, 'base.html', context=context)
+
+
+class AddToOrderView(LoginRequiredMixin, View):
+    def get(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        order, created = Order.objects.get_or_create(
+            user=request.user,
+            product_name=product,
+            defaults={'quantity': 1}
+        )
+
+        if not created:
+            order.quantity += 1
+            order.save()
+
+        return redirect('products:cart_detail')
+
+
+class DeleteFromCartView(LoginRequiredMixin, View):
+    def post(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        order = get_object_or_404(Order, user=request.user, product_name=product)
+        order.delete()
+
+        return redirect('products:cart_detail')
+
+
+class CartDetailView(LoginRequiredMixin, View):
+    def get(self, request):
+        orders = Order.objects.filter(user=request.user)
+        return render(request, 'cart_detail.html', {'orders': orders})
+
+
+class UpdateCartItemView(LoginRequiredMixin, View):
+    def post(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        order = get_object_or_404(Order, user=request.user, product_name=product)
+
+        new_quantity = int(request.POST.get('quantity', 1))
+
+        if new_quantity > 0:
+            order.quantity = new_quantity
+            order.save()
+        else:
+            order.delete()
+
+        return redirect('products:cart_detail')
+
+
+class AddToFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        Favorite.objects.get_or_create(user=request.user, product=product)
+        messages.add_message(request, messages.SUCCESS, 'Added to Favorites')
+        return redirect('products:products_detail', pk=product_id)
+
+class RemoveFromFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        favorite = Favorite.objects.filter(user=request.user, product=product)
+        if favorite.exists():
+            favorite.delete()
+        return redirect('products:favorite_list')
+
+class FavoriteListView(LoginRequiredMixin, View):
+    def get(self, request):
+        favorites = Favorite.objects.filter(user=request.user)
+        return render(request, 'favorite_list.html', {'favorites': favorites})

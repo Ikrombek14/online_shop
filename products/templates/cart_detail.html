@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+    <style>
+        .center-text {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #8A2BE2;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .button-link:hover {
+            background-color: #4a148c;
+        }
+        .icon-button {
+            background-color: #8A2BE2;
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .icon-button:disabled {
+            background-color: #D3D3D3;
+            cursor: not-allowed;
+        }
+        .icon-button:hover {
+            background-color: #4a148c;
+        }
+        .cart-item {
+            margin-bottom: 20px;
+        }
+        .remove-link {
+            color: #8A2BE2;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .remove-link:hover {
+            color: #4a148c;
+        }
+    </style>
+    {% if orders %}
+        {% for order in orders %}
+            <div class="cart-item">
+                <a href="{% url 'products:products_detail' order.product_name.id %}"><img src="{{ order.product_name.image.url }}" alt="{{ order.product_name.name }}" style="width:200px;height:auto;"></a>
+                <p><a href="{% url 'products:products_detail' order.product_name.id %}">{{ order.product_name.name }}</a> - ${{ order.product_name.price }}</p>
+                <p>Quantity: {{ order.quantity }}</p>
+                <form method="post" action="{% url 'products:update_cart_item' order.product_name.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="icon-button" name="quantity" value="{{ order.quantity|add:-1 }}" {% if order.quantity == 1 %}disabled{% endif %}><i class="fas fa-minus"></i></button>
+                    <span>{{ order.quantity }}</span>
+                    <button type="submit" class="icon-button" name="quantity" value="{{ order.quantity|add:1 }}"><i class="fas fa-plus"></i></button>
+                </form><br><br>
+                <a href="{% url 'products:delete_from_cart' order.product_name.id %}" class="remove-link" onclick="event.preventDefault(); document.getElementById('delete-form-{{ order.product_name.id }}').submit();"><i class="fas fa-trash-alt"></i> Remove</a>
+                <form id="delete-form-{{ order.product_name.id }}" method="post" action="{% url 'products:delete_from_cart' order.product_name.id %}" style="display:none;">
+                    {% csrf_token %}
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="center-text">
+            <h3>No any products in your cart</h3>
+            <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+        </div>
+    {% endif %}
+{% endblock %}

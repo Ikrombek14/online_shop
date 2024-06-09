@@ -33,6 +33,7 @@ class Order(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
     product_name = models.ForeignKey(Products, on_delete=models.DO_NOTHING)
     order_date = models.DateTimeField(auto_now_add=True)
+    quantity = models.PositiveIntegerField(default=1)
 
     class Meta:
         db_table = 'order'

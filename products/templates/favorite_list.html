@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <style>
+        .center-text {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            color: white;
+            background-color: #8A2BE2;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        .button-link:hover {
+            background-color: #4a148c;
+        }
+        .product-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .product-image {
+            width: 200px;
+            height: auto;
+        }
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #8A2BE2;
+        }
+        .product-info {
+            margin-top: 10px;
+        }
+    </style>
+
+    {% if favorites %}
+        <div class="product-container">
+            {% for favorite in favorites %}
+                <div class="product-container">
+                    <a href="{% url 'products:products_detail' favorite.product.id %}">
+                        <img src="{{ favorite.product.image.url }}" alt="{{ favorite.product.name }}" class="product-image">
+                    </a>
+                    <form method="post" action="{% url 'products:remove_from_favorite' favorite.product.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="favorite-icon" style="background:none;border:none;">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </form>
+                    <div class="product-info">
+                        <p>{{ favorite.product.name }} - ${{ favorite.product.price }}</p>
+                        <p><strong><a href="{% url 'products:add_order' favorite.product.id %}">Add to Cart</a></strong></p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="center-text">
+            <h3>Add your favorite product</h3>
+            <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
