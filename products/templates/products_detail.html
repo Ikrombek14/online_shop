@@ -2,97 +2,6 @@
 {% block title %}Product Details{% endblock %}
 {% block content %}
 
-<style>
-/* Chiroyli qilib berilgan CSS */
-/* Product Details sahifasidagi stillar */
-
-.product-container {
-    display: flex;
-    margin-bottom: 20px;
-}
-
-.product-image {
-    margin-right: 20px;
-    position: relative;
-}
-
-.favorite-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #8A2BE2;
-}
-
-.product-info {
-    flex: 1;
-}
-
-.product-info p {
-    margin-bottom: 10px;
-}
-
-.reviews {
-    margin-top: 20px;
-}
-
-.review-item {
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-.review-user {
-    font-weight: bold;
-}
-
-.review-rating {
-    margin-bottom: 5px;
-}
-
-.review-comment {
-    margin-bottom: 10px;
-}
-
-.delete-btn,
-.update-btn {
-    margin-top: 5px;
-}
-
-.cards {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.card {
-    flex: 1 0 300px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
-
-.card img {
-    width: 100%;
-    height: auto;
-}
-
-.product-info {
-    text-align: center;
-}
-
-.product-name {
-    font-weight: bold;
-}
-
-.product-price {
-    color: green;
-    font-size: 18px;
-    margin-top: 5px;
-}
-
-</style>
 
 
 <div class="product-container">
@@ -117,20 +26,15 @@
 
     </div>
 </div>
-
+<hr style="margin:10px;">
 <div class="reviews">
     <h2>Reviews</h2>
-    <form method="post" action="{% url 'products:add_comment' products.pk %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Comment</button>
-    </form>
-    <hr style="margin:10px;">
     {% for comment in comment_detail %}
     <div class="review-item">
         <div class="review-user">Username: {{ comment.user.username }}</div>
         <div class="review-rating">Rating: {{ comment.star_given }}</div>
         <p class="review-comment">Comment: {{ comment.comment }}</p>
+        <div class="review-date"> {{ comment.date }}</div>
 
         {% if user.is_authenticated and comment.user == user %}
         <button class="delete-btn">
@@ -140,10 +44,20 @@
             <a href="{% url 'products:update_comment' comment.pk %}">Update</a>
         </button>
         {% endif %}
-
     </div>
     {% endfor %}
+    <hr style="margin: 10px;" >
+    <div class="form-container">
+        <form method="post" action="{% url 'products:add_comment' products.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="submit-button">Add Comment</button>
+        </form>
+    </div>
+
 </div>
+
+<hr style="margin: 10px">
 
 <div>
     <h2>Other Products in this Category</h2>

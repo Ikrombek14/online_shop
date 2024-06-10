@@ -317,6 +317,15 @@
             margin-bottom: 20px;
         }
 
+        .review-user {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .review-date {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
         .review-button {
             margin-bottom: 10px;
         }
@@ -397,7 +406,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            width: 200px;
+            width: 250px;
             position: relative;
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
@@ -434,7 +443,67 @@
             font-size: 14px;
             color: #999;
         }
+        .product-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+            margin: 20px;
+            display: flex;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+        }
 
+        .product-image {
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .favorite-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #FF0000; /* Red color for heart icon */
+        }
+
+        .product-info {
+            width: 100%;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .product-info p {
+            margin: 10px 0;
+        }
+
+        .button-link, .product-info a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #8A2BE2;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button-link:hover, .product-info a:hover {
+            background-color: #601ba0;
+        }
 
         .profile-container {
             background-color: #fff;
@@ -534,6 +603,53 @@
             border: none;
             cursor: pointer;
         }
+
+        .form-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form p {
+            margin-bottom: 15px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .submit-button {
+            background-color: #8A2BE2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #5a1c94;
+        }
+
+
     </style>
 </head>
 <body>
@@ -556,11 +672,11 @@
                 <img src="{{ logo.image.url }}" width="200px" height="75px">
             </a>
         </div>
-<div class="search">
-    <form action="{% url 'products:search' %}" method="get" style="display: inline;">
-        <input type="text" name="q" placeholder="Search in products" required>
-    </form>
-</div>
+    <div class="search">
+        <form action="{% url 'products:search' %}" method="get" style="display: inline;">
+            <input type="search" name="q" placeholder="Search in products" required>
+        </form>
+    </div>
         {% if user.is_authenticated %}
         <div class="header-buttons">
             <a href="{% url 'users:profile' %}">
