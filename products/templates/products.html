@@ -1,6 +1,28 @@
 {% extends 'base.html' %}
-{% block title %} Products {%endblock%}
+{% block title %} Products {% endblock %}
 {% block content %}
+<style>
+    .center-text {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px; /* Added to create space between products and button */
+    }
+
+    .button-link {
+        display: inline-block;
+        padding: 10px 20px;
+        color: white;
+        background-color: #8A2BE2;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .button-link:hover {
+        background-color: #4a148c;
+    }
+</style>
+
 <div class="cards">
     {% for product in items %}
         <div class="card">
@@ -14,5 +36,8 @@
             </a>
         </div>
     {% endfor %}
+</div>
+<div class="center-text">
+    <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
 </div>
 {% endblock %}
