@@ -1,14 +1,105 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Your Orders</h2>
-<ul>
-{% for order in orders %}
-    <li>
-        {{ order.product.name }} - Ordered at {{ order.ordered_time }}<br>
-        Email: {{ order.user_email }}<br>
-        Delivery Location: {{ order.delivery_location.address }}<br>
-        Phone: {{ order.phone_number }}
-    </li>
-{% endfor %}
-</ul>
+<style>
+    .orders-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    .orders-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .order-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+    .order-item:last-child {
+        border-bottom: none;
+    }
+    .order-details {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-bottom: 10px;
+    }
+    .order-details span {
+        font-weight: bold;
+    }
+    .order-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .button-link, .remove-link {
+        display: inline-block;
+        padding: 10px 20px;
+        color: white;
+        background-color: #8A2BE2;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+    .button-link:hover, .remove-link:hover {
+        background-color: #4a148c;
+    }
+    .remove-link {
+        background-color: #FF6347;
+    }
+    .remove-link:hover {
+        background-color: #c9302c;
+    }
+    .center-text {
+        text-align: center;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="orders-container">
+    <div class="orders-header">
+        <h2>Your Orders</h2>
+    </div>
+    {% if orders %}
+        <ul>
+            {% for order in orders %}
+                <li class="order-item">
+                    <div class="order-details">
+                        <h3><a href="{% url 'products:products_detail' order.product.id %}">{{ order.product.name }}</a></h3> - Ordered at: {{ order.ordered_time }}<br>
+                        <span>Email:</span> {{ order.user_email }}<br>
+                        <span>Delivery Location:</span> {{ order.delivery_location }}<br>
+                        <span>Phone:</span> {{ order.phone_number }}<br>
+                    </div>
+                    <div class="order-actions">
+                        <a href="{% url 'products:cancel_order' order.id %}" class="remove-link" onclick="event.preventDefault(); document.getElementById('cancel-form-{{ order.id }}').submit();"><i class="fas fa-trash-alt"></i> Cancel Order</a>
+                        <form id="cancel-form-{{ order.id }}" method="post" action="{% url 'products:cancel_order' order.id %}" style="display:none;">
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="center-text">
+            <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+        </div>
+
+        <div class="center-text">
+            <a href="{% url 'users:profile' %}" class="button-link">Back</a>
+        </div>
+    {% else %}
+        <div class="center-text">
+            <h3>No products in your orders</h3><br>
+            <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+        </div>
+
+
+        <div class="center-text">
+            <a href="{% url 'users:profile' %}" class="button-link">Back</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

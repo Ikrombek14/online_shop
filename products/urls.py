@@ -4,7 +4,7 @@ from .views import (ProductsCategoryView, ProductsView,
                     UpdateCommentView, SearchView, ProductsAllView, LogoView,
                     AddToOrderView, DeleteFromCartView, CartDetailView, UpdateCartItemView,
                     AddToFavoriteView, RemoveFromFavoriteView, FavoriteListView,
-                    OrderProductsView, OrdersView)
+                    OrderProductsView, OrdersView, CancelOrderView)
 
 app_name = 'products'
 urlpatterns = [
@@ -26,4 +26,6 @@ urlpatterns = [
     path('favorites/', FavoriteListView.as_view(), name='favorite_list'),
     path('order/<int:product_id>/', OrderProductsView.as_view(), name='order_product'),
     path('orders/', OrdersView.as_view(), name='view_orders'),
+    path('cancel/<int:product_id>/order/', CancelOrderView.as_view(), name='cancel_order'),
+
 ]

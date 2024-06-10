@@ -1,10 +1,95 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Order: {{ product.name }}</h2>
-<img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100px;">
-<form method="post">
-    {% csrf_token %}
-    {{ order_card_form.as_p }}
-    <button type="submit">Place Order</button>
-</form>
+<style>
+    .order-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+    .order-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .order-header h2 {
+        margin: 0;
+    }
+    .order-image {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .order-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    .order-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .order-form form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .order-form button {
+        background-color: #8A2BE2;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .order-form button:hover {
+        background-color: #4a148c;
+    }
+    .button-link {
+        display: inline-block;
+        padding: 10px;
+        color: white;
+        background-color: #8A2BE2;
+        text-decoration: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+        text-align: center;
+        cursor: pointer;
+    }
+    .button-link:hover {
+        background-color: #4a148c;
+    }
+    .center-text {
+        text-align: center;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="order-container">
+    <div class="order-header">
+        <h2>Order: {{ product.name }}</h2>
+    </div>
+    <div class="order-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+    <div class="order-form">
+        <form method="post">
+            {% csrf_token %}
+            {{ order_card_form.as_p }}
+            <button type="submit">Place the Order</button>
+        </form>
+    </div>
+
+    <div class="center-text">
+        <a href="{% url 'products:cart_detail' %}" class="button-link">Back</a>
+    </div>
+
+    <div class="center-text">
+        <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+    </div>
+</div>
 {% endblock %}

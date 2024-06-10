@@ -1,12 +1,46 @@
-
 {% extends 'base.html' %}
 {% block title %}
   Profile
-{%endblock%}
-
-<link rel="stylesheet" href="#">
+{% endblock %}
 
 {% block content %}
+<style>
+  .profile-container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  .profile-info {
+    margin: 10px 0;
+  }
+  .edit-button, .orders-button {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    background-color: #8A2BE2;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    margin: 10px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .edit-button:hover, .orders-button:hover {
+    background-color: #4a148c;
+  }
+</style>
+
 <div class="profile-container">
   <img src="{{ user.image.url }}" alt="User Image" class="profile-image">
   <h3 class="profile-username">Username: {{ user.username }}</h3>
@@ -15,7 +49,14 @@
   <h3 class="profile-info">Email: {{ user.email }}</h3>
   <a href="{% url 'users:update-profile' %}">
     <button class="edit-button">Edit profile</button>
+  </a><br>
+  <a href="{% url 'products:view_orders' %}">
+    <button class="orders-button">View Orders</button>
+  </a><br>
+  <a href="{% url 'products:products' %}">
+    <button class="orders-button">Back</button>
   </a>
+
 </div>
 
 {% endblock content %}

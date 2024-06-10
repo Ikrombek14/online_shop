@@ -173,7 +173,12 @@ class DeleteFromCartView(LoginRequiredMixin, View):
 class CartDetailView(LoginRequiredMixin, View):
     def get(self, request):
         orders = Order.objects.filter(user=request.user)
-        return render(request, 'cart_detail.html', {'orders': orders})
+        logo = Logo.objects.first()
+        context = {
+            'orders' : orders,
+            'logo' : logo
+        }
+        return render(request, 'cart_detail.html', context=context)
 
 
 class UpdateCartItemView(LoginRequiredMixin, View):
@@ -212,7 +217,12 @@ class RemoveFromFavoriteView(LoginRequiredMixin, View):
 class FavoriteListView(LoginRequiredMixin, View):
     def get(self, request):
         favorites = Favorite.objects.filter(user=request.user)
-        return render(request, 'favorite_list.html', {'favorites': favorites})
+        logo = Logo.objects.first()
+        context = {
+            'favorites': favorites,
+            'logo' : logo
+        }
+        return render(request, 'favorite_list.html', context=context)
 
 
 class OrderProductsView(View):
@@ -220,7 +230,8 @@ class OrderProductsView(View):
     def get(self, request, product_id):
         product = get_object_or_404(Products, id=product_id)
         order_card_form = OrderProductForm()
-        return render(request, 'order_product.html', {'order_card_form': order_card_form, 'product': product})
+        logo = Logo.objects.first()
+        return render(request, 'order_product.html', {'order_card_form': order_card_form, 'product': product, 'logo':logo})
 
     def post(self, request, product_id):
         product = get_object_or_404(Products, id=product_id)
@@ -239,4 +250,16 @@ class OrderProductsView(View):
 class OrdersView(View):
     def get(self, request):
         orders = OrderProduct.objects.filter(user=request.user)
-        return render(request, 'view_orders.html', {'orders': orders})
+        logo = Logo.objects.first()
+        context = {
+            'orders': orders,
+            'logo' : logo
+        }
+        return render(request, 'view_orders.html', context=context)
+
+
+class CancelOrderView(LoginRequiredMixin, View):
+    def post(self, request, product_id):
+        order_product = get_object_or_404(OrderProduct, id=product_id, user=request.user)
+        order_product.delete()
+        return redirect('products:view_orders')

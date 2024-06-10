@@ -113,6 +113,8 @@
         <p><strong>Price:</strong> ${{ products.price }}</p>
         <p><strong>Rating:</strong> {{ average }}</p>
         <p><strong><a href="{% url 'products:add_order' products.pk %}">Add to Cart</a></p>
+        <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+
     </div>
 </div>
 

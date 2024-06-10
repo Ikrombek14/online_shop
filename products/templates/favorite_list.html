@@ -40,6 +40,23 @@
         .product-info {
             margin-top: 10px;
         }
+        .add-to-cart-link {
+            color: #8A2BE2;
+            text-decoration: none;
+            display: inline-block;
+            padding-left: 30px; /* Adjust the padding to align the icon properly */
+            position: relative;
+        }
+        .add-to-cart-link:hover {
+            color: #4a148c;
+        }
+        .add-to-cart-link i {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 5px;
+        }
     </style>
 
     {% if favorites %}
@@ -57,10 +74,19 @@
                     </form>
                     <div class="product-info">
                         <p>{{ favorite.product.name }} - ${{ favorite.product.price }}</p>
-                        <p><strong><a href="{% url 'products:add_order' favorite.product.id %}">Add to Cart</a></strong></p>
+                        <p>
+                            <strong>
+                                <a href="{% url 'products:add_order' favorite.product.id %}" class="add-to-cart-link">
+                                    <i class="fas fa-cart-plus"></i> Add to Cart
+                                </a>
+                            </strong>
+                        </p>
                     </div>
                 </div>
             {% endfor %}
+            <div class="center-text">
+                <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
+            </div>
         </div>
     {% else %}
         <div class="center-text">
