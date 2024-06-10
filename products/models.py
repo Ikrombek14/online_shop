@@ -4,7 +4,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
 
-
 # Create your models here.
 
 class ProductsCategory(models.Model):
@@ -81,7 +80,6 @@ class Logo(models.Model):
     image = models.ImageField(upload_to='logo/', blank=True, null=True)
 
 
-
 class DeliveryLocations(models.Model):
     location = models.CharField(max_length=128)
 
@@ -90,6 +88,7 @@ class DeliveryLocations(models.Model):
 
     def __str__(self):
         return self.location
+
 
 class OrderProduct(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)

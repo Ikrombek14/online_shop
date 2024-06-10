@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 from django.utils import timezone
 
+
 # Create your views here.
 
 
@@ -198,6 +199,7 @@ class AddToFavoriteView(LoginRequiredMixin, View):
         messages.add_message(request, messages.SUCCESS, 'Added to Favorites')
         return redirect('products:products_detail', pk=product_id)
 
+
 class RemoveFromFavoriteView(LoginRequiredMixin, View):
     def post(self, request, product_id):
         product = get_object_or_404(Products, id=product_id)
@@ -206,6 +208,7 @@ class RemoveFromFavoriteView(LoginRequiredMixin, View):
             favorite.delete()
         return redirect('products:favorite_list')
 
+
 class FavoriteListView(LoginRequiredMixin, View):
     def get(self, request):
         favorites = Favorite.objects.filter(user=request.user)
@@ -213,18 +216,24 @@ class FavoriteListView(LoginRequiredMixin, View):
 
 
 class OrderProductsView(View):
+
+    def get(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        order_card_form = OrderProductForm()
+        return render(request, 'order_product.html', {'order_card_form': order_card_form, 'product': product})
+
     def post(self, request, product_id):
         product = get_object_or_404(Products, id=product_id)
-        form = OrderProductForm(request.POST or None)
+        order_card_form = OrderProductForm(request.POST or None)
         if request.method == 'POST':
-            if form.is_valid():
-                order_product = form.save(commit=False)
+            if order_card_form.is_valid():
+                order_product = order_card_form.save(commit=False)
                 order_product.user = request.user
                 order_product.product = product
                 order_product.ordered_time = timezone.now()
                 order_product.save()
-                return redirect('products:orders')
-        return render(request, 'order_product.html', {'form': form, 'product': product})
+                return redirect('products:view_orders')
+        return render(request, 'order_product.html', {'order_card_form': order_card_form, 'product': product})
 
 
 class OrdersView(View):

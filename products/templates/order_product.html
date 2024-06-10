@@ -4,7 +4,7 @@
 <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100px;">
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ order_card_form.as_p }}
     <button type="submit">Place Order</button>
 </form>
 {% endblock %}

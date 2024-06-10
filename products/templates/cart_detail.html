@@ -64,6 +64,7 @@
                 <form id="delete-form-{{ order.product_name.id }}" method="post" action="{% url 'products:delete_from_cart' order.product_name.id %}" style="display:none;">
                     {% csrf_token %}
                 </form>
+                <a href="{% url 'products:order_product' order.product_name.id%}"> Buyurtma berish</a>
             </div>
         {% endfor %}
     {% else %}
