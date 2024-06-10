@@ -3,7 +3,8 @@ from .views import (ProductsCategoryView, ProductsView,
                     ProductsDetailView, AddCommentView, DeleteCommentView,
                     UpdateCommentView, SearchView, ProductsAllView, LogoView,
                     AddToOrderView, DeleteFromCartView, CartDetailView, UpdateCartItemView,
-                    AddToFavoriteView, RemoveFromFavoriteView, FavoriteListView     )
+                    AddToFavoriteView, RemoveFromFavoriteView, FavoriteListView,
+                    OrderProductsView, OrdersView)
 
 app_name = 'products'
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
     path('product/<int:product_id>/add_to_favorite/', AddToFavoriteView.as_view(), name='add_to_favorite'),
     path('product/<int:product_id>/remove_from_favorite/', RemoveFromFavoriteView.as_view(), name='remove_from_favorite'),
     path('favorites/', FavoriteListView.as_view(), name='favorite_list'),
+    path('order/<int:product_id>/', OrderProductsView.as_view(), name='order_product'),
+    path('orders/', OrdersView.as_view(), name='view_orders'),
 ]

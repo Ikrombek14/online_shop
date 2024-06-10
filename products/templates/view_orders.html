@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Your Orders</h2>
+<ul>
+{% for order in orders %}
+    <li>
+        {{ order.product.name }} - Ordered at {{ order.ordered_time }}<br>
+        Email: {{ order.user_email }}<br>
+        Delivery Location: {{ order.delivery_location.address }}<br>
+        Phone: {{ order.phone_number }}
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

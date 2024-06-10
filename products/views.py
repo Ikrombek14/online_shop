@@ -1,13 +1,13 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
-from .models import ProductsCategory, Products, Order, Favorite, Comment, Logo
-from .forms import CommentForm
+from .models import ProductsCategory, Products, Order, Favorite, Comment, Logo, OrderProduct
+from .forms import CommentForm, OrderProductForm
 from django.contrib import messages
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.db.models import Q
-
+from django.utils import timezone
 
 # Create your views here.
 
@@ -210,3 +210,24 @@ class FavoriteListView(LoginRequiredMixin, View):
     def get(self, request):
         favorites = Favorite.objects.filter(user=request.user)
         return render(request, 'favorite_list.html', {'favorites': favorites})
+
+
+class OrderProductsView(View):
+    def post(self, request, product_id):
+        product = get_object_or_404(Products, id=product_id)
+        form = OrderProductForm(request.POST or None)
+        if request.method == 'POST':
+            if form.is_valid():
+                order_product = form.save(commit=False)
+                order_product.user = request.user
+                order_product.product = product
+                order_product.ordered_time = timezone.now()
+                order_product.save()
+                return redirect('products:orders')
+        return render(request, 'order_product.html', {'form': form, 'product': product})
+
+
+class OrdersView(View):
+    def get(self, request):
+        orders = OrderProduct.objects.filter(user=request.user)
+        return render(request, 'view_orders.html', {'orders': orders})

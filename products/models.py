@@ -1,6 +1,8 @@
 from django.db import models
 from users.models import CustomUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
+
 
 
 # Create your models here.
@@ -77,3 +79,28 @@ class Comment(models.Model):
 
 class Logo(models.Model):
     image = models.ImageField(upload_to='logo/', blank=True, null=True)
+
+
+
+class DeliveryLocations(models.Model):
+    location = models.CharField(max_length=128)
+
+    class Meta:
+        db_table = 'locations'
+
+    def __str__(self):
+        return self.location
+
+class OrderProduct(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+    user_email = models.EmailField()
+    product = models.ForeignKey(Products, on_delete=models.DO_NOTHING)
+    delivery_location = models.ForeignKey(DeliveryLocations, on_delete=models.DO_NOTHING)
+    phone_number = models.CharField(max_length=10)
+    ordered_time = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'order_product'
+
+    def __str__(self):
+        return f'{self.user_first.username} - {self.product.name}'
