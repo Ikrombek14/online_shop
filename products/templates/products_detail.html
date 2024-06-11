@@ -21,7 +21,9 @@
         <p><strong>Description:</strong> {{ products.description }}</p>
         <p><strong>Price:</strong> ${{ products.price }}</p>
         <p><strong>Rating:</strong> {{ average }}</p>
+        {% if user.is_authenticated %}
         <p><strong><a href="{% url 'products:add_order' products.pk %}">Add to Cart</a></p>
+        {% endif %}
         <a href="{% url 'products:products' %}" class="button-link">Back to Products</a>
 
     </div>
@@ -48,11 +50,13 @@
     {% endfor %}
     <hr style="margin: 10px;" >
     <div class="form-container">
+        {% if user.is_authenticated %}
         <form method="post" action="{% url 'products:add_comment' products.pk %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="submit-button">Add Comment</button>
         </form>
+        {% endif %}
     </div>
 
 </div>
